@@ -14,7 +14,6 @@ from tenacity import (
     after_log
 )
 import httpx
-from requests.exceptions import RequestException
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +36,6 @@ RETRIABLE_EXCEPTIONS = (
     httpx.TimeoutException,
     httpx.ConnectError,
     httpx.HTTPStatusError,
-    RequestException,
     ConnectionError,
     TimeoutError
 )

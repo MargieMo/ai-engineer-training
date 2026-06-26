@@ -1,7 +1,9 @@
 # AutoGen多智能体客服系统依赖包
 
 # AutoGen框架 - 核心智能体框架
-pyautogen>=0.2.0
+# 使用 AG2（经典 AutoGen v0.2 API 的社区延续版，提供 import autogen 命名空间）
+# 注意：不要用 pyautogen，新版 pyautogen(0.4+) 不再提供经典 autogen API
+ag2>=0.9.0
 
 # FastAPI - Web API框架
 fastapi>=0.104.0

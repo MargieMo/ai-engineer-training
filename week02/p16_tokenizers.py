@@ -19,10 +19,13 @@ for model_name in tokenizers:
     # 可选：打印具体token
     print(f"Tokens: {tokens}")
 
-# 1024 tokens ,4080TI 16GB    
+# 1024 tokens, 4080TI 16GB 显存不够   
 # GPT-2  只有Transformer decoder 架构 ， 只能利用上文，不能利用下文 自注意力机制
 
-# L 序列  L*L  1024*1024*12*2byte = 240MB * 12 = 2.88G * 4 = 11.5G + 230MB + 920M = 13.6G + 中间激活值230M = 13.8G
+# L 序列  L*L  1024*1024*12(注意力的头， 因为只有decoder)*2(精度，如果用float16，那就是两个字节)byte = 24MB(真正占用的显存) * 12（gpt2的层数） = 2.88G * 4（batch数量） = 11.5G + 230MB + 920M（优化器） = 13.6G + 中间激活值230M（梯度） = 13.8G
+
+# 16G 显存
+# maxlength: 512  batch size: 8
 
 
 # 22G Titan
@@ -35,10 +38,10 @@ for model_name in tokenizers:
 # 1、减小 max_length 512
 # 2、使用更粗粒度的 tokenizer  BERT 
 # 3、启用梯度检查点  gradient checkpointing=True
-# 4、启用混合精度训练（AMP）
+# 4、启用混合精度训练（AMP - Automatic Mixed Precision）
 # 5、使用多卡
 
-# OOM OOV
+# OOM 内存    OOV 显存
 
 
 #  W   4*4 = 16 

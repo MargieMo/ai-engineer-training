@@ -42,7 +42,7 @@ messages = [
 
 # 2. 使用定义的工具提示模型
 response = client.chat.completions.create(
-    model="gpt-4o-mini",
+    model="gpt-5",
     tools=tools,
     messages=messages,
 )
@@ -90,7 +90,7 @@ for i, message in enumerate(messages):
 
 
 response = client.chat.completions.create(
-    model="gpt-4o-mini",
+    model="gpt-5",
     tools=tools,
     messages=messages,
 )

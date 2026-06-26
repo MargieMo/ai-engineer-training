@@ -2,9 +2,14 @@
 # pip install llama-index llama-index-embeddings-dashscope llama-index-llms-openai-like
 import os
 from pathlib import Path
-from llama_index.embeddings.dashscope import DashScopeEmbedding,DashScopeTextEmbeddingModels
+#from llama_index.embeddings.dashscope import DashScopeEmbedding,DashScopeTextEmbeddingModels
 from llama_index.core import SimpleDirectoryReader,VectorStoreIndex
-from llama_index.llms.openai_like import OpenAILike
+#from llama_index.llms.openai_like import OpenAILike
+from dotenv import load_dotenv
+from llama_index.embeddings.openai import OpenAIEmbedding
+from llama_index.llms.openai import OpenAI
+
+load_dotenv()
 
 # 这两行代码是用于消除 WARNING 警告信息，避免干扰阅读学习，生产环境中建议根据需要来设置日志级别
 import logging
@@ -17,31 +22,55 @@ script_path = Path(__file__).resolve()
 # 获取脚本所在的目录
 script_dir = script_path.parent
 # 构建docs目录的路径（与脚本同级）
-docs_path = script_dir / "docs"
+#docs_path = script_dir / "docs"
+docs_path = script_dir.parent / "docs"
+
+# 检查docs目录是否存在且包含文件
+if not docs_path.exists():
+    print(f"错误：docs目录不存在 {docs_path} ")
+    exit(1)
+
+if not any(docs_path.iterdir()):
+    print(f"错误：docs目录为空, 请在 {docs_path} 中添加文档文件")
+    exit(1)
 
 # LlamaIndex提供了SimpleDirectoryReader方法，可以直接将指定文件夹中的文件加载为document对象，对应着解析过程
 documents = SimpleDirectoryReader(str(docs_path)).load_data()
 
 print("正在创建索引...")
 # from_documents方法包含切片与建立索引步骤
+# index = VectorStoreIndex.from_documents(
+#     documents,
+#     # 指定embedding 模型
+#     embed_model=DashScopeEmbedding(
+#         # 你也可以使用阿里云提供的其它embedding模型：https://help.aliyun.com/zh/model-studio/getting-started/models#3383780daf8hw
+#         model_name=DashScopeTextEmbeddingModels.TEXT_EMBEDDING_V2
+#     ))
 index = VectorStoreIndex.from_documents(
     documents,
-    # 指定embedding 模型
-    embed_model=DashScopeEmbedding(
-        # 你也可以使用阿里云提供的其它embedding模型：https://help.aliyun.com/zh/model-studio/getting-started/models#3383780daf8hw
-        model_name=DashScopeTextEmbeddingModels.TEXT_EMBEDDING_V2
-    ))
+    embed_model=OpenAIEmbedding(
+        model="text-embedding-3-small",
+        api_key=os.getenv("OPENAI_API_KEY")
+    )
+)
 print("正在创建提问引擎...")
+# query_engine = index.as_query_engine(
+#     # 设置为流式输出
+#     streaming=True,
+#     # 此处使用qwen-plus模型，你也可以使用阿里云提供的其它qwen的文本生成模型：https://help.aliyun.com/zh/model-studio/getting-started/models#9f8890ce29g5u
+#     llm=OpenAILike(
+#         model="qwen-plus",
+#         api_base="https://dashscope.aliyuncs.com/compatible-mode/v1",
+#         api_key=os.getenv("DASHSCOPE_API_KEY"),
+#         is_chat_model=True
+#         ))
 query_engine = index.as_query_engine(
-    # 设置为流式输出
     streaming=True,
-    # 此处使用qwen-plus模型，你也可以使用阿里云提供的其它qwen的文本生成模型：https://help.aliyun.com/zh/model-studio/getting-started/models#9f8890ce29g5u
-    llm=OpenAILike(
-        model="qwen-plus",
-        api_base="https://dashscope.aliyuncs.com/compatible-mode/v1",
-        api_key=os.getenv("DASHSCOPE_API_KEY"),
-        is_chat_model=True
-        ))
+    llm=OpenAI(
+        model="gpt-5",
+        api_key=os.getenv("OPENAI_API_KEY")
+    )
+)
 print("正在生成回复...")
 streaming_response = query_engine.query('我们公司项目管理应该用什么工具')
 print("回答是：")

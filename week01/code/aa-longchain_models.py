@@ -1,3 +1,10 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+api_key = os.getenv('OPENAI_API_KEY')
+base_url = os.getenv('OPENAI_API_BASE')
+
 # 1 模型 I/O 模块
 from langchain.llms import openai
 from langchain.chat_models import ChatOpenAI
@@ -10,7 +17,7 @@ print(response.content)
 
 # 2 RAG
 
-from  langchain.chains import RetrievalQA
+from langchain.chains import RetrievalQA
 qa_chain = RetrievalQA.from_chain_type(
     llm = ChatOpenAI(model='gpt-5'),
     chain_type="stuff",
@@ -21,10 +28,10 @@ qa_chain.run("问题是???")
 
 # 3 存储 memory
 # 读取 写入
-
-#         memory（R）  memory(W)
-#         /      \   /        \
-# input    ｜      LLM      ｜ output
+ 
+#        memory（R）       memory(W)
+#      /           \   /          \
+# input      ｜     LLM      ｜     output
 
 # 4 工具 tools
 
@@ -41,11 +48,14 @@ tool = Tool(
 
 # 5 callback
 # 回调： 特定操作发生时执行预定处理程序的机制
-# 两种实现方式： 构造器回调  请求回调
+# 两种实现方式： 构造器回调(全生命周期， 日志， 监测)  请求回调（单独的）
 
-# 回调地狱
+# challenging: 回调地狱
 
-# 现代
-# Promise、Future 扁平化
-# Async Await  以同步风格写异步代码
+# 现代 how to solve challenging:
+# 1. Promise、Future 扁平化
+# 2. Async Await  以同步风格写异步代码
+
+
+
 # 6 LCEL

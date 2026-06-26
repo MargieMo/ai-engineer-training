@@ -27,7 +27,7 @@ base_url = os.getenv('OPENAI_API_BASE')
 
 # 配置OPENAI COMPATIBLE客户端
 model_client = OpenAIChatCompletionClient(
-    model="openai/gpt-4o-mini",
+    model="gpt-4o-mini",
     api_key=api_key,
     base_url=base_url,
     model_info={

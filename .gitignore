@@ -216,3 +216,7 @@ __marimo__/
 
 week02/requirements.txt
 week02/uv.lock
+
+# Milvus Lite local database (regenerated on startup)
+milvus_demo.db/
+**/milvus_demo.db/

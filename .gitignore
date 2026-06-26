@@ -220,3 +220,7 @@ week02/uv.lock
 # Milvus Lite local database (regenerated on startup)
 milvus_demo.db/
 **/milvus_demo.db/
+
+# GraphRAG generated artifacts (regenerated on startup / build)
+**/graph_rag_index/
+**/neo4j_data/

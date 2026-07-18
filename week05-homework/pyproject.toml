@@ -1,10 +1,25 @@
 [project]
 name = "week05-homework"
 version = "0.1.0"
-description = "Add your description here"
+description = "MCP-based multi-agent article writing system"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+	"cryptography<49",
+	"ddgs",
+	"fastmcp",
+	"langchain-mcp-adapters",
+	"langchain-openai",
+	"langgraph",
 	"python-dotenv",
-	# add your dependencies here and run `uv sync` to install them
 ]
+
+[dependency-groups]
+dev = [
+	"pytest",
+	"pytest-asyncio",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

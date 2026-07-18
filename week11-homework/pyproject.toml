@@ -1,10 +1,15 @@
 [project]
 name = "week11-homework"
 version = "0.1.0"
-description = "Add your description here"
+description = "Werewolf game with multi-agent collaboration (LangGraph)"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
 	"python-dotenv",
-	# add your dependencies here and run `uv sync` to install them
+	"langchain>=0.3.27",
+	"langchain-community>=0.3.29",
+	"langchain-openai>=0.3.33",
+	"langgraph>=0.6.7",
+	"faiss-cpu>=1.9.0",
+	"streamlit>=1.40.0",
 ]

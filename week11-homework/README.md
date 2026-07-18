@@ -43,3 +43,10 @@
 | AutoGen         | 多 Agent 对话天然支持，适合模拟发言环节         |
 | CrewAI          | 任务分工清晰，角色定义简洁                     |
 
+# 本仓库实现说明（werewolf）
+- 框架：LangChain + LangGraph + FAISS RAG
+- 设计文档：`DESIGN.md`
+- 命令行跑一局：`uv run python -m werewolf.main`
+- Streamlit 可视化：`uv run streamlit run streamlit_app.py`
+- 对局回放样本：`logs/game_replay_*.md`
+
